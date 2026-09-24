@@ -1,0 +1,8 @@
+name=Better Brush Picker
+tid=BetterBrushPicker
+id=BetterBrushPicker
+author=Dizzy
+modversion=0.2.9
+description=Build 42 Brush Tool picker with an individual-tile browser with search, categories, visual results, vanilla brush cursor selection, and persistent caching. Build 42 brush-compatible numeric tile IDs are indexed.
+
+url=https://steamcommunity.com/id/illMindOfDizzy/
