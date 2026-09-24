@@ -1,0 +1,6 @@
+name=Better Brush Picker
+tid=BetterBrushPicker
+id=BetterBrushPicker
+author=ChatGPT
+modversion=0.2.0
+description=Build 42 Brush Tool picker with an indexed individual-tile browser, search, categories, visual results, and vanilla brush cursor selection.

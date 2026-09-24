@@ -1,0 +1,5 @@
+name=Better Brush Picker
+id=BetterBrushPicker
+author=ChatGPT
+modversion=0.1.1
+description=Better Brush Picker prototype for B42; waits for the vanilla Brush Tool UI to load before installing. A faster, cleaner replacement for the vanilla Project Zomboid Build 42 Brush Tool tile picker. Adds category filters, better searching, a larger preview area, and tile-name feedback while continuing to use the vanilla brush cursor.
