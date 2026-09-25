@@ -1,41 +1,36 @@
 # Better Brush Picker
 
-A Project Zomboid Build 42 mod by **Dizzy** that improves the vanilla Brush Tool tile picker with a searchable visual browser for individual tiles.
+Project Zomboid Build 42 mod by **Dizzy**.
 
-## Current build
+## v0.6.0 — Verified Sprite Index
 
-**v0.2.9**
+This version keeps the working native scrolling UI from v0.5.x but rebuilds the tile data layer around the sprites Project Zomboid itself loaded from its tile-definition files.
 
-The root `42/` and `common/` folders are the current v0.2.9 mod files.
+### Core features
+- Search individual tile IDs.
+- Category filtering.
+- Eight-tile visual rows.
+- White tile-card outlines.
+- Native Project Zomboid scrolling list.
+- Vanilla brush cursor selection.
+- Persistent verified tile cache.
 
-## Version archive
+### What changed
+- Old `BBP_CACHE_7` / unverified caches are no longer used.
+- New cache generation uses `BBP_CACHE_8` plus a definition fingerprint.
+- Every new tile candidate is checked against the current `IsoSprite` loaded by B42.
+- A tile is indexed only when its `IsoSprite` reports a real texture (`hasNoTextures() == false`).
+- Thumbnail rendering reads the already-loaded sprite texture instead of trying to reconstruct textures with `LoadFrameExplicit()` or `LoadFramesNoDirPageSimple()`.
+- The old artificial `0..2047` tile-index restriction is removed. The engine's tile-definition lists determine which indices exist.
+- Duplicate tile IDs are removed.
 
-Every build created during development is preserved under [`versions/`](versions/), including alternate/fixed builds that shared the same version number.
+### Expected first-run behavior
+The first run after v0.6.0 will rebuild the verified index because it uses a new cache generation. The log separates raw candidate IDs from verified drawable tiles.
 
-| Build | Archive |
-|---|---|
-| v0.1.0 | `versions/v0.1.0/` |
-| v0.1.1 | `versions/v0.1.1/` |
-| v0.2.0 | `versions/v0.2.0/` |
-| v0.2.1 | `versions/v0.2.1/` |
-| v0.2.1-safe | `versions/v0.2.1-safe/` |
-| v0.2.2-cache | `versions/v0.2.2-cache/` |
-| v0.2.2-fixed | `versions/v0.2.2-fixed/` |
-| v0.2.3 | `versions/v0.2.3/` |
-| v0.2.4 | `versions/v0.2.4/` |
-| v0.2.5-direct-enumeration | `versions/v0.2.5-direct-enumeration/` |
-| v0.2.6-direct-enumeration | `versions/v0.2.6-direct-enumeration/` |
-| v0.2.7-fixed | `versions/v0.2.7-fixed/` |
-| v0.2.8 | `versions/v0.2.8/` |
-| v0.2.9 | `versions/v0.2.9/` |
+The goal is not to force an exact count. B42.20's official vanilla tile count is about 35,000; your runtime can contain additional tiles from active mods.
 
-Each version folder contains both the original ZIP and the extracted source for that exact build.
-
-## Development notes
-
-The project evolved from a small diagnostic picker into an indexed, cached tile browser. The development history is recorded in [`CHANGELOG.md`](CHANGELOG.md).
-
-## Author
-
-**Dizzy**  
-Steam: https://steamcommunity.com/id/illMindOfDizzy/
+### Console markers
+```text
+[BetterBrushPicker] Installed v0.6.0 successfully.
+[BetterBrushPicker] Verified index: cached rows are accepted only when their current IsoSprite has a real texture; new cache header BBP_CACHE_8.
+```

@@ -1,58 +1,18 @@
-Better Brush Picker
+BETTER BRUSH PICKER v0.6.0
 Author: Dizzy
-Steam: https://steamcommunity.com/id/illMindOfDizzy/
 
-BETTER BRUSH PICKER — BUILD 42
-Version 0.2.8
+VERIFIED SPRITE INDEX REBUILD
 
-WHAT THIS VERSION DOES
-- Replaces the vanilla Brush Tool tile picker window.
-- Builds an index of individual tiles/sprites instead of requiring a tilesheet first.
-- Shows visual tile results in a scrollable grid.
-- Searches individual tile IDs plus tileset names, categories, and semantic aliases.
-- Includes broad aliases for common searches such as chair, fridge, window, door, wall, table, bed, toilet, sink, etc.
-- Keeps the vanilla ISBrushToolTileCursor for actual tile placement/dragging.
-- Adds category filters.
-- The tile index is built gradually after the game starts to avoid a large one-time freeze.
+This build keeps the working native ISScrollingListBox UI from v0.5.x but rebuilds the tile catalog around the IsoSprite objects Project Zomboid itself loads from tile-definition files.
 
-PERSISTENT DIRECT CACHE
-- The full available Brush Tool-compatible tile catalog is indexed.
-- The scanner uses IsoWorld:getAllTiles() / getAllTiles(filename) to enumerate actual tile IDs exposed by Build 42 instead of probing thousands of possible numeric slots.
-- Scanning happens in bursts of up to 256 actual tile IDs per game tick.
-- Each completed tileset is written to its own persistent cache file in the Project Zomboid user-data area.
-- Cached tilesets are loaded on later launches instead of being rescanned.
-- If the game crashes or closes during a scan, completed tilesets remain cached and the next launch resumes with the missing tilesets.
-- Cache files use the BBP_CACHE_6 header. Only Brush Tool atlas-style IDs in the form <tileset>_<numeric index> with indices 0-2047 are accepted, matching the vanilla Brush Tool tile picker range.
+The old unverified cache generation is intentionally ignored. A new BBP_CACHE_8 cache is generated.
 
-V0.2.8 FIX
-- Tightened direct enumeration so only vanilla Brush Tool-compatible numeric atlas IDs are indexed.
-- Added defensive validation before creating the vanilla brush cursor.
-- Cache format bumped to BBP_CACHE_6 so the older broad direct-enumeration cache is rebuilt safely.
+A candidate is indexed only when B42's current IsoSprite reports a real texture. This prevents the picker from filling with definition entries that cannot be rendered.
 
-V0.2.4 HISTORY
-- Replaced the million-slot fixed scan with direct B42 tile-ID enumeration.
-- Restored the searchable-text helper and added the token-matching helper used by the result search.
-- Cache format was previously bumped to BBP_CACHE_5 for direct enumeration; v0.2.8 advances it to BBP_CACHE_6 for the stricter Brush Tool-compatible ID filter.
-- The mod description and version metadata are synchronized to 0.2.8.
+Thumbnails use the texture already attached to the IsoSprite. The mod does not call LoadFrameExplicit() or LoadFramesNoDirPageSimple() during browsing, because those methods mutate sprite state and are not needed for ordinary tile-definition sprites.
 
-INSTALLATION (MAC)
-1. Quit Project Zomboid.
-2. Put the BetterBrushPicker folder directly in:
-   ~/Zomboid/mods/
-3. Enable Better Brush Picker in the Mods menu.
-4. Start/load your world.
-5. Open Debug -> Brush Tool -> Choose tile.
-6. The window should say:
-   Better Brush Picker — Individual Tiles
+The first run after upgrading may take some time while the verified index is built. Completed definition lists are cached and reused on later launches when their definition fingerprint still matches.
 
-IMPORTANT
-- Do NOT put the ZIP file itself in ~/Zomboid/mods/.
-- Keep this folder named BetterBrushPicker.
-- Keep the 42/ folder structure intact.
-- Remove/replace older Better Brush Picker copies so that only the intended version is enabled.
-
-DEBUGGING
-If the window shows an error/debug screen, quit the game and send the relevant portion of:
-~/Zomboid/console.txt
-
-Do not delete working cache files unless a future release specifically asks you to clear them.
+On startup, the console should contain:
+[BetterBrushPicker] Installed v0.6.0 successfully.
+[BetterBrushPicker] Verified index: cached rows are accepted only when their current IsoSprite has a real texture; new cache header BBP_CACHE_8.
